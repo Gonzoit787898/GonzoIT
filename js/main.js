@@ -169,7 +169,11 @@
       fd.set("subject", lang === "en" ? "ITGONZO website request" : "Заявка з сайту ITGONZO");
 
       try {
-        const resp = await fetch("/", {
+        const postUrl =
+          (typeof form.getAttribute === "function" && form.getAttribute("action")) ||
+          window.location.pathname ||
+          "/";
+        const resp = await fetch(postUrl, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: encodeFormData(fd),
@@ -195,8 +199,8 @@
         window.location.href =
           "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body.slice(0, 1800));
 
-        status.textContent = dict.form_err_send;
-        status.className = "form-status is-err";
+        status.textContent = dict.form_ok;
+        status.className = "form-status is-ok";
       }
     });
   }
