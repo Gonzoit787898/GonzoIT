@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ITGONZO LLC — IT services: programming, consulting, hosting, web portals." />
+    <title>ITGONZO LLC — IT-послуги</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container inner">
+        <a href="#hero" class="logo" aria-label="ITGONZO">
+          <svg class="logo-emblem" viewBox="0 0 120 44" role="img" aria-label="GONZO IT">
+            <defs>
+              <linearGradient id="gGlow" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#7CF7FF" />
+                <stop offset="0.55" stop-color="#18D7FF" />
+                <stop offset="1" stop-color="#1A6BFF" />
+              </linearGradient>
+              <filter id="fGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2.6" result="b" />
+                <feColorMatrix
+                  in="b"
+                  type="matrix"
+                  values="
+                    1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    0 0 0 0.9 0"
+                  result="c"
+                />
+                <feMerge>
+                  <feMergeNode in="c" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <g filter="url(#fGlow)">
+              <circle cx="22" cy="22" r="18" fill="none" stroke="url(#gGlow)" stroke-width="3" />
+              <path d="M12 26c6 4 14 4 20 0" fill="none" stroke="url(#gGlow)" stroke-width="2.5" stroke-linecap="round" />
+              <text x="46" y="21" font-size="16" font-weight="800" fill="url(#gGlow)" font-family="DM Sans, system-ui, sans-serif" letter-spacing="0.5">GONZO</text>
+              <text x="46" y="36" font-size="10" font-weight="700" fill="#D9FBFF" font-family="DM Sans, system-ui, sans-serif" letter-spacing="2">IT</text>
+              <path d="M46 26h56" stroke="url(#gGlow)" stroke-width="2.2" stroke-linecap="round" />
+              <path d="M46 30h44" stroke="url(#gGlow)" stroke-width="2.2" stroke-linecap="round" opacity="0.9" />
+            </g>
+          </svg>
+        </a>
+        <button
+          type="button"
+          class="nav-toggle"
+          id="nav-toggle"
+          aria-expanded="false"
+          aria-controls="nav-panel"
+          aria-label="Menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav-panel" id="nav-panel" aria-label="Main">
+          <ul class="nav-list">
+            <li><a href="#hero" data-i18n="nav_home">Головна</a></li>
+            <li><a href="#about" data-i18n="nav_about">Про компанію</a></li>
+            <li><a href="#services" data-i18n="nav_services">Послуги</a></li>
+            <li><a href="#contact" data-i18n="nav_contact">Контакти</a></li>
+          </ul>
+          <div class="header-controls">
+            <div class="lang-switch" role="group" aria-label="Language">
+              <button type="button" data-lang="uk" class="is-active" aria-pressed="true">UA</button>
+              <button type="button" data-lang="en" aria-pressed="false">EN</button>
+            </div>
+            <div class="theme-switch" role="group" aria-label="Theme">
+              <button type="button" data-theme="dark" class="is-active" aria-pressed="true" title="Dark">◐</button>
+              <button type="button" data-theme="light" aria-pressed="false" title="Light">◑</button>
+            </div>
+            <a class="btn btn-primary btn-small" href="#contact" data-i18n="nav_cta">Зв'язатися</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="hero">
+        <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="container">
+          <span class="hero-badge" data-i18n="hero_badge">IT-послуги</span>
+          <h1 data-i18n="hero_title">
+            Розробка, консалтинг та цифрові рішення для вашого бізнесу
+          </h1>
+          <p class="lead" data-i18n="hero_lead">
+            Повний цикл IT-послуг: програмування, публікація ПЗ, консультування, хостинг, веб-портали та інформаційні сервіси.
+          </p>
+          <a href="#contact" class="btn btn-primary" data-i18n="hero_cta">Зв'язатися з нами</a>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="about">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="about_title">Про компанію</h2>
+            <p data-i18n="about_sub">ITGONZO LLC — ваш надійний партнер у цифровій трансформації.</p>
+          </div>
+          <p class="about-text" data-i18n="about_text">
+            ITGONZO LLC — постачальник IT-послуг, що допомагає компаніям будувати та розвивати програмне забезпечення, інфраструктуру та онлайн-присутність. Ми поєднуємо технічну експертизу з практичним підходом до завдань клієнтів.
+          </p>
+          <div class="about-ai">
+            <h3 class="about-ai__title" data-i18n="about_ai_title">AI-функції для спрощення процесів</h3>
+            <ul class="about-ai__list">
+              <li data-i18n="about_ai_1">Автовідповіді клієнтам і первинна кваліфікація звернень</li>
+              <li data-i18n="about_ai_2">Генерація контенту: описи, новини, email-шаблони</li>
+              <li data-i18n="about_ai_3">Пошук по базі знань і документах компанії</li>
+              <li data-i18n="about_ai_4">Автоматизація рутинних задач у CRM та підтримці</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="services_title">Послуги</h2>
+            <p data-i18n="services_sub">Рішення, які допомагають бізнесу рости швидше.</p>
+          </div>
+          <div class="services-grid">
+            <article class="service-card">
+              <div class="service-code" data-i18n="svc_badge_main">Основне</div>
+              <h3 data-i18n="svc_web_title">Верстка та розробка сайтів</h3>
+              <p class="service-text" data-i18n="svc_web_text">Лендінги, корпоративні сайти, каталоги. Швидко, адаптивно, з фокусом на конверсію.</p>
+            </article>
+            <article class="service-card">
+              <div class="service-code" data-i18n="svc_badge_fast">Швидкий старт</div>
+              <h3 data-i18n="svc_ui_title">Дизайн та UI/UX</h3>
+              <p class="service-text" data-i18n="svc_ui_text">Сучасний стиль, зрозуміла структура, прототипи. Щоб сайт виглядав і продавав.</p>
+            </article>
+            <article class="service-card">
+              <div class="service-code" data-i18n="svc_badge_growth">Зростання</div>
+              <h3 data-i18n="svc_automation_title">Автоматизація процесів</h3>
+              <p class="service-text" data-i18n="svc_automation_text">Інтеграції, CRM-логіка, кабінети, заявки. Менше ручної роботи — більше результату.</p>
+            </article>
+            <article class="service-card">
+              <div class="service-code" data-i18n="svc_badge_ai">AI</div>
+              <h3 data-i18n="svc_ai_title">AI-функції для бізнесу</h3>
+              <p class="service-text" data-i18n="svc_ai_text">Чат-боти, генерація контенту, пошук по базі знань, автоматизація звернень і підтримки.</p>
+            </article>
+            <article class="service-card">
+              <div class="service-code" data-i18n="svc_badge_reliable">Надійність</div>
+              <h3 data-i18n="svc_infra_title">Хостинг та інфраструктура</h3>
+              <p class="service-text" data-i18n="svc_infra_text">Налаштування домену, SSL, деплой, моніторинг. Стабільна робота й швидке завантаження.</p>
+            </article>
+            <article class="service-card">
+              <div class="service-code" data-i18n="svc_badge_support">Супровід</div>
+              <h3 data-i18n="svc_support_title">Підтримка та розвиток</h3>
+              <p class="service-text" data-i18n="svc_support_text">Оновлення, нові сторінки, оптимізація швидкості й безпеки. Ми на зв’язку після запуску.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="contact">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="contact_title">Контакти</h2>
+            <p data-i18n="contact_sub">Реквізити та спосіб зв'язку.</p>
+          </div>
+          <div class="contact-grid">
+            <div class="contact-card">
+              <dl>
+                <div>
+                  <dt data-i18n="label_name">Назва компанії</dt>
+                  <dd>ITGONZO LLC</dd>
+                </div>
+                <div>
+                  <dt data-i18n="label_code">Ідентифікаційний код</dt>
+                  <dd>45968149</dd>
+                </div>
+                <div>
+                  <dt data-i18n="label_email">Електронна пошта</dt>
+                  <dd><a href="mailto:support.manager@itgonzo.com">support.manager@itgonzo.com</a></dd>
+                </div>
+                <div>
+                  <dt data-i18n="label_address">Місцезнаходження юридичної особи</dt>
+                  <dd data-i18n="value_address">
+                    Україна, 04201, місто Київ, вул.Кульженків Сім'ї, будинок 35, приміщення 1
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <div class="contact-card">
+              <dl>
+                <div>
+                  <dt data-i18n="footer_legal">Повна юридична назва (українською)</dt>
+                  <dd lang="uk">"ITGONZO" ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ</dd>
+                </div>
+                <div>
+                  <dt data-i18n="label_legal_en">Юридична назва (англійською)</dt>
+                  <dd lang="en">"ITGONZO" LIMITED LIABILITY COMPANY</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <div class="contact-form-panel">
+            <h3 data-i18n="form_title">Написати нам</h3>
+            <p data-i18n="form_hint">
+              Заповніть форму — заявка буде надіслана та продубльована на email.
+            </p>
+            <form
+              id="gonzo-contact-form"
+              class="gonzo-form"
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              novalidate
+            >
+              <input type="hidden" name="form-name" value="contact" />
+              <p style="display:none">
+                <label>Don’t fill this out: <input name="bot-field" /></label>
+              </p>
+              <div class="field">
+                <label for="gonzo-name" data-i18n="form_name">Ім’я</label>
+                <input id="gonzo-name" name="name" type="text" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="gonzo-email" data-i18n="form_email">Email</label>
+                <input id="gonzo-email" name="email" type="email" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="gonzo-message" data-i18n="form_message">Повідомлення</label>
+                <textarea id="gonzo-message" name="message" rows="4" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" data-i18n="form_submit">Надіслати</button>
+              <p id="gonzo-form-status" class="form-status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-brand">ITGONZO LLC</div>
+            <p class="footer-meta">
+              <span data-i18n="footer_foreign">"ITGONZO" ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ</span>
+              <span><span data-i18n="label_code">Ідентифікаційний код</span>: 45968149</span>
+              <span><span data-i18n="label_address_short">Адреса</span>: <span data-i18n="value_address">Україна, 04201, місто Київ, вул.Кульженків Сім'ї, будинок 35, приміщення 1</span></span>
+              <span
+                ><span data-i18n="label_email">Електронна пошта</span>:
+                <a href="mailto:support.manager@itgonzo.com">support.manager@itgonzo.com</a></span
+              >
+            </p>
+          </div>
+          <div class="lang-switch" role="group" aria-label="Language">
+            <button type="button" data-lang="uk" class="is-active" aria-pressed="true">UA</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-copy">© <span id="year"></span> ITGONZO LLC. <span data-i18n="footer_rights">Усі права захищені.</span></p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
