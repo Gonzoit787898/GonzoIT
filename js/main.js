@@ -2,7 +2,6 @@
   "use strict";
 
   const STORAGE_KEY = "itgonzo-lang";
-  const THEME_KEY = "itgonzo-theme";
   const CONTACT_EMAIL = "support.manager@itgonzo.com";
 
   const translations = {
@@ -17,6 +16,13 @@
       hero_lead:
         "Повний цикл IT-послуг: програмування, публікація ПЗ, консультування, хостинг, веб-портали та інформаційні сервіси.",
       hero_cta: "Зв'язатися з нами",
+      hero_metrics_aria: "Ключові переваги компанії",
+      hero_metric_1_t: "24/7",
+      hero_metric_1_s: "Завжди на зв’язку",
+      hero_metric_2_t: "AI + Web",
+      hero_metric_2_s: "Фокус на реалізації",
+      hero_metric_3_t: "Повний цикл",
+      hero_metric_3_s: "Від ідеї до запуску",
       about_title: "Про компанію",
       about_sub: "ITGONZO LLC — команда, яка допомагає бізнесу впевнено проходити цифрові зміни.",
       about_text:
@@ -80,6 +86,13 @@
       hero_lead:
         "Full-cycle IT services: programming, software publishing, consulting, hosting, web portals, and information services.",
       hero_cta: "Contact us",
+      hero_metrics_aria: "Key company strengths",
+      hero_metric_1_t: "24/7",
+      hero_metric_1_s: "Support window",
+      hero_metric_2_t: "AI + Web",
+      hero_metric_2_s: "Delivery focus",
+      hero_metric_3_t: "Full cycle",
+      hero_metric_3_s: "From idea to launch",
       about_title: "About the company",
       about_sub: "ITGONZO LLC helps teams move through digital change with confidence.",
       about_text:
@@ -219,30 +232,6 @@
     } catch (_) {}
   }
 
-  function getStoredTheme() {
-    try {
-      const v = localStorage.getItem(THEME_KEY);
-      if (v === "dark" || v === "light") return v;
-    } catch (_) {}
-    return "dark";
-  }
-
-  function setStoredTheme(theme) {
-    try {
-      localStorage.setItem(THEME_KEY, theme);
-    } catch (_) {}
-  }
-
-  function applyTheme(theme) {
-    const t = theme === "light" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", t);
-    document.querySelectorAll(".theme-switch button[data-theme]").forEach(function (btn) {
-      const active = btn.getAttribute("data-theme") === t;
-      btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-pressed", active ? "true" : "false");
-    });
-  }
-
   function applyTranslations(lang) {
     const dict = translations[lang] || translations.uk;
     document.documentElement.lang = lang === "en" ? "en" : "uk";
@@ -253,6 +242,13 @@
       const key = el.getAttribute("data-i18n");
       if (key && dict[key] !== undefined) {
         el.textContent = dict[key];
+      }
+    });
+
+    document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+      const key = el.getAttribute("data-i18n-aria");
+      if (key && dict[key] !== undefined) {
+        el.setAttribute("aria-label", dict[key]);
       }
     });
 
@@ -285,119 +281,23 @@
     });
   }
 
-  function initTheme() {
-    let theme = getStoredTheme();
-    applyTheme(theme);
-    document.querySelectorAll(".theme-switch button[data-theme]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        theme = btn.getAttribute("data-theme");
-        if (theme !== "dark" && theme !== "light") return;
-        setStoredTheme(theme);
-        applyTheme(theme);
-        closeMobileNav();
-      });
+  /** React Bits Splash Cursor — vanilla bundle (`splash-cursor.js`), параметры как в примере */
+  function initSplashCursorEffect() {
+    const root = document.getElementById("splash-cursor-root");
+    if (!root || typeof window.initSplashCursor !== "function") return;
+    window.initSplashCursor(root, {
+      SIM_RESOLUTION: 128,
+      DYE_RESOLUTION: 1440,
+      DENSITY_DISSIPATION: 3.5,
+      VELOCITY_DISSIPATION: 2,
+      PRESSURE: 0.1,
+      CURL: 3,
+      SPLAT_RADIUS: 0.2,
+      SPLAT_FORCE: 6000,
+      COLOR_UPDATE_SPEED: 10,
+      RAINBOW_MODE: true,
+      COLOR: "#18d7ff"
     });
-  }
-
-  function initHeroCanvas() {
-    const canvas = document.getElementById("hero-canvas");
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
-
-    let w = 0;
-    let h = 0;
-    let dpr = 1;
-
-    function resize() {
-      dpr = Math.min(2, window.devicePixelRatio || 1);
-      w = Math.floor(canvas.clientWidth);
-      h = Math.floor(canvas.clientHeight);
-      canvas.width = Math.max(1, Math.floor(w * dpr));
-      canvas.height = Math.max(1, Math.floor(h * dpr));
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    const dots = Array.from({ length: 42 }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      vx: (Math.random() - 0.5) * 0.08,
-      vy: (Math.random() - 0.5) * 0.08,
-      r: 1.2 + Math.random() * 1.6,
-    }));
-
-    let raf = 0;
-    let last = performance.now();
-
-    function tick(now) {
-      const dt = Math.min(32, now - last) / 1000;
-      last = now;
-
-      ctx.clearRect(0, 0, w, h);
-
-      // Background subtle gradient
-      const g = ctx.createLinearGradient(0, 0, w, h);
-      g.addColorStop(0, "rgba(124,247,255,0.10)");
-      g.addColorStop(0.55, "rgba(24,215,255,0.06)");
-      g.addColorStop(1, "rgba(26,107,255,0.08)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, w, h);
-
-      // Move
-      for (const p of dots) {
-        p.x += p.vx * dt;
-        p.y += p.vy * dt;
-        if (p.x < -0.05) p.x = 1.05;
-        if (p.x > 1.05) p.x = -0.05;
-        if (p.y < -0.05) p.y = 1.05;
-        if (p.y > 1.05) p.y = -0.05;
-      }
-
-      // Connections
-      ctx.lineWidth = 1;
-      for (let i = 0; i < dots.length; i++) {
-        for (let j = i + 1; j < dots.length; j++) {
-          const a = dots[i];
-          const b = dots[j];
-          const dx = (a.x - b.x) * w;
-          const dy = (a.y - b.y) * h;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 140) {
-            const alpha = 1 - dist / 140;
-            ctx.strokeStyle = `rgba(124,247,255,${0.18 * alpha})`;
-            ctx.beginPath();
-            ctx.moveTo(a.x * w, a.y * h);
-            ctx.lineTo(b.x * w, b.y * h);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Dots
-      for (const p of dots) {
-        const x = p.x * w;
-        const y = p.y * h;
-        ctx.fillStyle = "rgba(217,251,255,0.85)";
-        ctx.beginPath();
-        ctx.arc(x, y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "rgba(24,215,255,0.12)";
-        ctx.beginPath();
-        ctx.arc(x, y, p.r * 4.2, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      raf = requestAnimationFrame(tick);
-    }
-
-    resize();
-    window.addEventListener("resize", resize, { passive: true });
-    raf = requestAnimationFrame(tick);
   }
 
   function initNav() {
@@ -421,19 +321,31 @@
     });
   }
 
+  function initGlassHeader() {
+    const header = document.querySelector(".site-header");
+    if (!header) return;
+
+    const applyState = function () {
+      header.classList.toggle("is-scrolled", window.scrollY > 12);
+    };
+
+    applyState();
+    window.addEventListener("scroll", applyState, { passive: true });
+  }
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
-      initTheme();
       initLang();
       initNav();
+      initGlassHeader();
       initContactForm();
-      initHeroCanvas();
+      initSplashCursorEffect();
     });
   } else {
-    initTheme();
     initLang();
     initNav();
+    initGlassHeader();
     initContactForm();
-    initHeroCanvas();
+    initSplashCursorEffect();
   }
 })();

@@ -74,10 +74,6 @@
               <button type="button" data-lang="uk" class="is-active" aria-pressed="true">UA</button>
               <button type="button" data-lang="en" aria-pressed="false">EN</button>
             </div>
-            <div class="theme-switch" role="group" aria-label="Theme">
-              <button type="button" data-theme="dark" class="is-active" aria-pressed="true" title="Dark">◐</button>
-              <button type="button" data-theme="light" aria-pressed="false" title="Light">◑</button>
-            </div>
             <a class="btn btn-primary btn-small" href="#contact" data-i18n="nav_cta">Зв'язатися</a>
           </div>
         </nav>
@@ -86,21 +82,86 @@
 
     <main>
       <section class="hero" id="hero">
-        <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+        <div id="splash-cursor-root" class="splash-cursor-root" aria-hidden="true"></div>
         <div class="hero-glow" aria-hidden="true"></div>
-        <div class="container">
-          <span class="hero-badge" data-i18n="hero_badge">IT-послуги</span>
-          <h1 data-i18n="hero_title">
-            Розробка, консалтинг та цифрові рішення для вашого бізнесу
-          </h1>
-          <p class="lead" data-i18n="hero_lead">
-            Повний цикл IT-послуг: програмування, публікація ПЗ, консультування, хостинг, веб-портали та інформаційні сервіси.
-          </p>
-          <a href="#contact" class="btn btn-primary" data-i18n="hero_cta">Зв'язатися з нами</a>
+        <div class="container hero-layout">
+          <div class="hero-copy">
+            <span class="hero-badge" data-i18n="hero_badge">IT-послуги</span>
+            <h1 class="hero-title" data-i18n="hero_title">
+              Розробка, консалтинг та цифрові рішення для вашого бізнесу
+            </h1>
+            <p class="lead" data-i18n="hero_lead">
+              Повний цикл IT-послуг: програмування, публікація ПЗ, консультування, хостинг, веб-портали та інформаційні сервіси.
+            </p>
+            <a href="#contact" class="btn btn-primary" data-i18n="hero_cta">Зв'язатися з нами</a>
+            <div class="hero-metrics" data-i18n-aria="hero_metrics_aria">
+              <div class="metric-chip">
+                <strong data-i18n="hero_metric_1_t">24/7</strong>
+                <span data-i18n="hero_metric_1_s">Завжди на зв’язку</span>
+              </div>
+              <div class="metric-chip">
+                <strong data-i18n="hero_metric_2_t">AI + Web</strong>
+                <span data-i18n="hero_metric_2_s">Фокус на реалізації</span>
+              </div>
+              <div class="metric-chip">
+                <strong data-i18n="hero_metric_3_t">Повний цикл</strong>
+                <span data-i18n="hero_metric_3_s">Від ідеї до запуску</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-visual__orb hero-visual__orb--a"></div>
+            <div class="hero-visual__orb hero-visual__orb--b"></div>
+            <figure class="hero-laptop">
+              <div class="hero-laptop__lid"></div>
+              <div class="hero-laptop__screen">
+                <img
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80"
+                  alt=""
+                  width="900"
+                  height="560"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="hero-laptop__base"></div>
+            </figure>
+            <div class="hero-float hero-float--1">
+              <img
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=420&q=80"
+                alt=""
+                width="420"
+                height="280"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="hero-float hero-float--2">
+              <img
+                src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=420&q=80"
+                alt=""
+                width="420"
+                height="280"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="hero-float hero-float--3">
+              <img
+                src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=420&q=80"
+                alt=""
+                width="420"
+                height="280"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="section section-alt" id="about">
+      <section class="section section-alt section-about" id="about">
         <div class="container">
           <div class="section-head">
             <h2 data-i18n="about_title">Про компанію</h2>
@@ -121,39 +182,45 @@
         </div>
       </section>
 
-      <section class="section" id="services">
+      <section class="section section-services" id="services">
         <div class="container">
           <div class="section-head">
             <h2 data-i18n="services_title">Послуги</h2>
             <p data-i18n="services_sub">Рішення, які допомагають бізнесу рости швидше.</p>
           </div>
           <div class="services-grid">
-            <article class="service-card">
+            <article class="service-card service-card--primary">
+              <span class="service-icon" aria-hidden="true">◈</span>
               <div class="service-code" data-i18n="svc_badge_main">Основне</div>
               <h3 data-i18n="svc_web_title">Верстка та розробка сайтів</h3>
               <p class="service-text" data-i18n="svc_web_text">Лендінги, корпоративні сайти, каталоги. Швидко, адаптивно, з фокусом на конверсію.</p>
             </article>
-            <article class="service-card">
+            <article class="service-card service-card--highlight">
+              <span class="service-icon" aria-hidden="true">✦</span>
               <div class="service-code" data-i18n="svc_badge_fast">Швидкий старт</div>
               <h3 data-i18n="svc_ui_title">Дизайн та UI/UX</h3>
               <p class="service-text" data-i18n="svc_ui_text">Сучасний стиль, зрозуміла структура, прототипи. Щоб сайт виглядав і продавав.</p>
             </article>
             <article class="service-card">
+              <span class="service-icon" aria-hidden="true">⚡</span>
               <div class="service-code" data-i18n="svc_badge_growth">Зростання</div>
               <h3 data-i18n="svc_automation_title">Автоматизація процесів</h3>
               <p class="service-text" data-i18n="svc_automation_text">Інтеграції, CRM-логіка, кабінети, заявки. Менше ручної роботи — більше результату.</p>
             </article>
             <article class="service-card">
+              <span class="service-icon" aria-hidden="true">◎</span>
               <div class="service-code" data-i18n="svc_badge_ai">AI</div>
               <h3 data-i18n="svc_ai_title">AI-функції для бізнесу</h3>
               <p class="service-text" data-i18n="svc_ai_text">Чат-боти, генерація контенту, пошук по базі знань, автоматизація звернень і підтримки.</p>
             </article>
             <article class="service-card">
+              <span class="service-icon" aria-hidden="true">⬢</span>
               <div class="service-code" data-i18n="svc_badge_reliable">Надійність</div>
               <h3 data-i18n="svc_infra_title">Хостинг та інфраструктура</h3>
               <p class="service-text" data-i18n="svc_infra_text">Налаштування домену, SSL, деплой, моніторинг. Стабільна робота й швидке завантаження.</p>
             </article>
             <article class="service-card">
+              <span class="service-icon" aria-hidden="true">❖</span>
               <div class="service-code" data-i18n="svc_badge_support">Супровід</div>
               <h3 data-i18n="svc_support_title">Підтримка та розвиток</h3>
               <p class="service-text" data-i18n="svc_support_text">Оновлення, нові сторінки, оптимізація швидкості й безпеки. Ми на зв’язку після запуску.</p>
@@ -162,7 +229,7 @@
         </div>
       </section>
 
-      <section class="section section-alt" id="contact">
+      <section class="section section-alt section-contact" id="contact">
         <div class="container">
           <div class="section-head">
             <h2 data-i18n="contact_title">Контакти</h2>
@@ -273,6 +340,7 @@
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
     </script>
+    <script src="js/splash-cursor.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>
