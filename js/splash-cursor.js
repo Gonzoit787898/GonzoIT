@@ -34,9 +34,8 @@
   function initSplashCursor(container, opts) {
     if (!container) return function () {};
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return function () {};
-
-    if (window.matchMedia('(pointer: coarse)').matches) return function () {};
+    // Skip touch-only devices; allow mouse on Windows laptops with touchscreens.
+    if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) return function () {};
 
     var opt = mergeDefaults(opts);
 
@@ -106,10 +105,16 @@
  let pointers = [new pointerPrototype()];
 
  const { gl, ext } = getWebGLContext(canvas);
+ if (!gl || !ext.formatRGBA || !ext.formatRG || !ext.formatR) {
+ try { container.removeChild(canvas); } catch (e) {}
+ container.dataset.splashActive = '0';
+ return function () {};
+ }
  if (!ext.supportLinearFiltering) {
  config.DYE_RESOLUTION = 256;
  config.SHADING = false;
  }
+ container.dataset.splashActive = '1';
 
  function getWebGLContext(canvas) {
  const params = {
@@ -117,11 +122,25 @@
  depth: false,
  stencil: false,
  antialias: false,
- preserveDrawingBuffer: false
+ preserveDrawingBuffer: false,
+ failIfMajorPerformanceCaveat: false,
+ powerPreference: 'high-performance'
  };
  let gl = canvas.getContext('webgl2', params);
  const isWebGL2 = !!gl;
  if (!isWebGL2) gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+ if (!gl) {
+ return {
+ gl: null,
+ ext: {
+ formatRGBA: null,
+ formatRG: null,
+ formatR: null,
+ halfFloatTexType: null,
+ supportLinearFiltering: false
+ }
+ };
+ }
 
  let halfFloat;
  let supportLinearFiltering;
@@ -1019,20 +1038,41 @@
  return hash;
  }
 
+ function pointerCoords(clientX, clientY) {
+ const rect = canvas.getBoundingClientRect();
+ const ratio = window.devicePixelRatio || 1;
+ return {
+ x: (clientX - rect.left) * ratio,
+ y: (clientY - rect.top) * ratio
+ };
+ }
+
+ function isPointerInside(clientX, clientY) {
+ const rect = canvas.getBoundingClientRect();
+ return (
+ clientX >= rect.left &&
+ clientX <= rect.right &&
+ clientY >= rect.top &&
+ clientY <= rect.bottom
+ );
+ }
+
  // Named event handlers for proper cleanup
  function handleMouseDown(e) {
+ if (!isPointerInside(e.clientX, e.clientY)) return;
  let pointer = pointers[0];
- let posX = scaleByPixelRatio(e.clientX);
- let posY = scaleByPixelRatio(e.clientY);
- updatePointerDownData(pointer, -1, posX, posY);
+ const pos = pointerCoords(e.clientX, e.clientY);
+ updatePointerDownData(pointer, -1, pos.x, pos.y);
  clickSplat(pointer);
  }
 
  let firstMouseMoveHandled = false;
  function handleMouseMove(e) {
+ if (!isPointerInside(e.clientX, e.clientY)) return;
  let pointer = pointers[0];
- let posX = scaleByPixelRatio(e.clientX);
- let posY = scaleByPixelRatio(e.clientY);
+ const pos = pointerCoords(e.clientX, e.clientY);
+ let posX = pos.x;
+ let posY = pos.y;
  if (!firstMouseMoveHandled) {
  let color = generateColor();
  updatePointerMoveData(pointer, posX, posY, color);
@@ -1046,9 +1086,8 @@
  const touches = e.targetTouches;
  let pointer = pointers[0];
  for (let i = 0; i < touches.length; i++) {
- let posX = scaleByPixelRatio(touches[i].clientX);
- let posY = scaleByPixelRatio(touches[i].clientY);
- updatePointerDownData(pointer, touches[i].identifier, posX, posY);
+ const pos = pointerCoords(touches[i].clientX, touches[i].clientY);
+ updatePointerDownData(pointer, touches[i].identifier, pos.x, pos.y);
  }
  }
 
@@ -1056,9 +1095,8 @@
  const touches = e.targetTouches;
  let pointer = pointers[0];
  for (let i = 0; i < touches.length; i++) {
- let posX = scaleByPixelRatio(touches[i].clientX);
- let posY = scaleByPixelRatio(touches[i].clientY);
- updatePointerMoveData(pointer, posX, posY, pointer.color);
+ const pos = pointerCoords(touches[i].clientX, touches[i].clientY);
+ updatePointerMoveData(pointer, pos.x, pos.y, pointer.color);
  }
  }
 

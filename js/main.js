@@ -320,21 +320,136 @@
     });
   }
 
+  function initHeroCursorFallback(root) {
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "splash-cursor-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.display = "block";
+    root.appendChild(canvas);
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let hue = 185;
+    let raf = 0;
+    const splats = [];
+
+    function resize() {
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      width = Math.max(1, root.clientWidth);
+      height = Math.max(1, root.clientHeight);
+      canvas.width = Math.max(1, Math.floor(width * dpr));
+      canvas.height = Math.max(1, Math.floor(height * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function insideHero(clientX, clientY) {
+      const rect = root.getBoundingClientRect();
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    }
+
+    function addSplat(clientX, clientY, strong) {
+      const rect = root.getBoundingClientRect();
+      splats.push({
+        x: clientX - rect.left,
+        y: clientY - rect.top,
+        r: strong ? 30 : 20,
+        life: 1,
+        hue: hue,
+      });
+      hue = (hue + 5) % 360;
+      if (splats.length > 56) splats.shift();
+    }
+
+    function onMove(e) {
+      if (!insideHero(e.clientX, e.clientY)) return;
+      addSplat(e.clientX, e.clientY, false);
+    }
+
+    function onDown(e) {
+      if (!insideHero(e.clientX, e.clientY)) return;
+      addSplat(e.clientX, e.clientY, true);
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, width, height);
+      for (let i = splats.length - 1; i >= 0; i--) {
+        const s = splats[i];
+        s.life -= 0.03;
+        s.r += 0.55;
+        if (s.life <= 0) {
+          splats.splice(i, 1);
+          continue;
+        }
+        const gradient = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r);
+        gradient.addColorStop(0, "hsla(" + s.hue + ", 92%, 68%, " + 0.38 * s.life + ")");
+        gradient.addColorStop(1, "hsla(" + s.hue + ", 92%, 52%, 0)");
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mousedown", onDown);
+    root.dataset.splashActive = "fallback";
+    tick();
+  }
+
+  function canUseFluidWebGL() {
+    try {
+      const probe = document.createElement("canvas");
+      const gl = probe.getContext("webgl2", { failIfMajorPerformanceCaveat: false });
+      return !!gl;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function initSplashCursorEffect() {
     const root = document.getElementById("splash-cursor-root");
-    if (!root || typeof window.initSplashCursor !== "function") return;
-    window.initSplashCursor(root, {
-      SIM_RESOLUTION: 128,
-      DYE_RESOLUTION: 1440,
-      DENSITY_DISSIPATION: 3.5,
-      VELOCITY_DISSIPATION: 2,
-      PRESSURE: 0.1,
-      CURL: 3,
-      SPLAT_RADIUS: 0.2,
-      SPLAT_FORCE: 6000,
-      COLOR_UPDATE_SPEED: 10,
-      RAINBOW_MODE: true,
-      COLOR: "#18d7ff",
+    if (!root) return;
+
+    if (!canUseFluidWebGL()) {
+      initHeroCursorFallback(root);
+      return;
+    }
+
+    if (typeof window.initSplashCursor === "function") {
+      window.initSplashCursor(root, {
+        SIM_RESOLUTION: 128,
+        DYE_RESOLUTION: 1024,
+        DENSITY_DISSIPATION: 3.5,
+        VELOCITY_DISSIPATION: 2,
+        PRESSURE: 0.1,
+        CURL: 3,
+        SPLAT_RADIUS: 0.2,
+        SPLAT_FORCE: 6000,
+        COLOR_UPDATE_SPEED: 10,
+        RAINBOW_MODE: true,
+        COLOR: "#18d7ff",
+      });
+    }
+
+    requestAnimationFrame(function () {
+      if (root.dataset.splashActive === "1") return;
+      root.innerHTML = "";
+      initHeroCursorFallback(root);
     });
   }
 
