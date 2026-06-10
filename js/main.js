@@ -2,6 +2,7 @@
   "use strict";
 
   const STORAGE_KEY = "itgonzo-lang";
+  const THEME_KEY = "itgonzo-theme";
   const CONTACT_EMAIL = "support.manager@itgonzo.com";
 
   const translations = {
@@ -232,6 +233,30 @@
     } catch (_) {}
   }
 
+  function getStoredTheme() {
+    try {
+      const v = localStorage.getItem(THEME_KEY);
+      if (v === "dark" || v === "light") return v;
+    } catch (_) {}
+    return "dark";
+  }
+
+  function setStoredTheme(theme) {
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch (_) {}
+  }
+
+  function applyTheme(theme) {
+    const t = theme === "light" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", t);
+    document.querySelectorAll(".theme-switch button[data-theme]").forEach(function (btn) {
+      const active = btn.getAttribute("data-theme") === t;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
   function applyTranslations(lang) {
     const dict = translations[lang] || translations.uk;
     document.documentElement.lang = lang === "en" ? "en" : "uk";
@@ -281,22 +306,17 @@
     });
   }
 
-  /** React Bits Splash Cursor — vanilla bundle (`splash-cursor.js`), параметры как в примере */
-  function initSplashCursorEffect() {
-    const root = document.getElementById("splash-cursor-root");
-    if (!root || typeof window.initSplashCursor !== "function") return;
-    window.initSplashCursor(root, {
-      SIM_RESOLUTION: 128,
-      DYE_RESOLUTION: 1440,
-      DENSITY_DISSIPATION: 3.5,
-      VELOCITY_DISSIPATION: 2,
-      PRESSURE: 0.1,
-      CURL: 3,
-      SPLAT_RADIUS: 0.2,
-      SPLAT_FORCE: 6000,
-      COLOR_UPDATE_SPEED: 10,
-      RAINBOW_MODE: true,
-      COLOR: "#18d7ff"
+  function initTheme() {
+    let theme = getStoredTheme();
+    applyTheme(theme);
+    document.querySelectorAll(".theme-switch button[data-theme]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        theme = btn.getAttribute("data-theme");
+        if (theme !== "dark" && theme !== "light") return;
+        setStoredTheme(theme);
+        applyTheme(theme);
+        closeMobileNav();
+      });
     });
   }
 
@@ -321,31 +341,17 @@
     });
   }
 
-  function initGlassHeader() {
-    const header = document.querySelector(".site-header");
-    if (!header) return;
-
-    const applyState = function () {
-      header.classList.toggle("is-scrolled", window.scrollY > 12);
-    };
-
-    applyState();
-    window.addEventListener("scroll", applyState, { passive: true });
-  }
-
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
+      initTheme();
       initLang();
       initNav();
-      initGlassHeader();
       initContactForm();
-      initSplashCursorEffect();
     });
   } else {
+    initTheme();
     initLang();
     initNav();
-    initGlassHeader();
     initContactForm();
-    initSplashCursorEffect();
   }
 })();
