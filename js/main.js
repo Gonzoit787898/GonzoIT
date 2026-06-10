@@ -320,6 +320,24 @@
     });
   }
 
+  function initSplashCursorEffect() {
+    const root = document.getElementById("splash-cursor-root");
+    if (!root || typeof window.initSplashCursor !== "function") return;
+    window.initSplashCursor(root, {
+      SIM_RESOLUTION: 128,
+      DYE_RESOLUTION: 1440,
+      DENSITY_DISSIPATION: 3.5,
+      VELOCITY_DISSIPATION: 2,
+      PRESSURE: 0.1,
+      CURL: 3,
+      SPLAT_RADIUS: 0.2,
+      SPLAT_FORCE: 6000,
+      COLOR_UPDATE_SPEED: 10,
+      RAINBOW_MODE: true,
+      COLOR: "#18d7ff",
+    });
+  }
+
   function initNav() {
     const toggle = document.getElementById("nav-toggle");
     const panel = document.getElementById("nav-panel");
@@ -347,11 +365,13 @@
       initLang();
       initNav();
       initContactForm();
+      initSplashCursorEffect();
     });
   } else {
     initTheme();
     initLang();
     initNav();
     initContactForm();
+    initSplashCursorEffect();
   }
 })();
